@@ -1,0 +1,49 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- STYLES CSS -->
+        <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+        <!-- BOX ICONS CSS-->
+        <link href='https://cdn.jsdelivr.net/npm/boxicons@2.0.5/css/boxicons.min.css' rel='stylesheet'>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+        <title>{% block title %}{% endblock title %}|Calories Calculator</title>
+    </head>
+    <body id="body">
+       <!--========== HEADER ==========-->
+    
+    <header class="header"> 
+    {% block header %}{% endblock header %}
+            <div class="header__container">
+                <h3 class="header__logo">Calories <span style="color:#0AFFFF;">Calculator</span></h3>
+                <div class="header__toggle">
+                    <a href="{% url 'register'%}"><span style="color:#0AFFFF;">Sign uP</span></a>
+                    <a href="{% url 'loginUser'%}"><span style="color:#0AFFFF;">/Login</span></a>
+
+                    {% comment %} <a href="{% url 'loginUser'%}"><span style="color:#09a8a0">Login</span></a> {% endcomment %}
+
+                </div>
+            </div>
+        </header>
+        <!--========== HEADER END ==========-->
+        {% block body %}{% endblock body %}
+ 
+        <!-- Footer -->
+            <footer class=" footer text-center text-lg-start text-muted">
+                <!-- Copyright -->
+                    <div class="text-center p-4">
+                        <strong> © 2021 Copyright:</strong>
+                        <a class="text-reset fw-bold" href="https://vu.edu.pk/">Virtual University of Pakistan</a>
+                    </div>
+                    <!-- Copyright -->
+                </footer>
+            <!-- Footer -->
+      
+       
+    </body>
+  
+</html>

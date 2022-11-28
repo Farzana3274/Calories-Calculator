@@ -1,0 +1,104 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- STYLES CSS -->
+        <link rel="stylesheet" href="{% static 'css/style1.css' %}">
+
+        <!-- BOX ICONS CSS-->
+        <link href='https://cdn.jsdelivr.net/npm/boxicons@2.0.5/css/boxicons.min.css' rel='stylesheet'>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <!--Chart js-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" integrity="sha256-Uv9BNBucvCPipKQ2NS9wYpJmi8DTOEfTA/nH2aoJALw=" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.css" integrity="sha256-aa0xaJgmK/X74WM224KMQeNQC2xYKwlAt08oZqjeF0E=" crossorigin="anonymous" />
+        <!-- jQuery -->
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+        <title>{% block title %}{% endblock title %}|Calories Calculator</title>
+    </head>
+    {% block style %}{% endblock style %}
+    <body id="body">
+       <!--========== HEADER ==========-->
+       <header class="header">
+        <div class="header__container">
+            <h3 class="header__logo">Calories <span style="color:#0AFFFF;">Calculator</span></h3>
+
+            <div class="header__toggle">
+                <h3 id="header-toggle">&#128075; Welcome <span style="color:#0AFFFF;">{{user}}</span></h3>
+            </div>
+        </div>
+    </header>
+    <!--========== HEADER END ==========-->
+    <!--========== NAVBAR ==========-->
+        <div class="l-navbar" id="navbar">
+            <nav class="nav">
+                <div>
+                    <h2 href="#" class="nav__logo">
+                        <span class="nav__logo-text">{{user}}</span>
+                    </h2>
+    
+                    <div class="nav__toggle" id="nav-toggle">
+                        <i class='bx bx-chevron-right'></i>
+                    </div>
+    
+                    <ul class="nav__list">
+                        <a href="{% url 'home'%}" class="nav__link active">
+                            <i class='bx bx-home nav__icon' ></i>
+                            <span class="nav__text">Home</span>
+                        </a>
+                        <a href="{% url 'EditBMR' %}" class="nav__link">
+                            <i class='bx bx-edit nav__icon'></i>
+                            <span class="nav__text">Update BMR</span>
+                        </a>
+                        <a href="{% url 'search'%}" class="nav__link">
+                            <i class='bx bx-search nav__icon' ></i>
+                            <span class="nav__text">Search</span>
+                        </a>
+                        <a href="{% url 'graph'%}" class="nav__link">
+                            <i class='bx bx-bar-chart nav__icon'></i>
+                            <span class="nav__text">Report</span>
+                        </a>                
+                    </ul>
+                </div>
+                <a href="{% url 'logoutUser'%}" class="nav__link">           
+                    <i class='bx bx-log-out-circle nav__icon'></i>
+                    <span class="nav__text">Logout</span>
+                </a>
+            </nav>
+        </div>
+        
+       {% block body %}{% endblock body %}
+    </body>
+    <!-- MAIN JS -->
+    <script >
+                  // SHOW MENU
+            const showMenu = (toggleId, navbarId,bodyId) =>{
+              const toggle = document.getElementById(toggleId),
+              navbar = document.getElementById(navbarId),
+              bodypadding = document.getElementById(bodyId)
+
+              if(toggle && navbar){
+                  toggle.addEventListener('click', ()=>{
+                      // APARECER MENU
+                      navbar.classList.toggle('show')
+                      // ROTATE TOGGLE
+                      toggle.classList.toggle('rotate')
+                      // PADDING BODY
+                      bodypadding.classList.toggle('expander')
+                  })
+              }
+            }
+            showMenu('nav-toggle','navbar','body')
+
+            // LINK ACTIVE COLOR
+            const linkColor = document.querySelectorAll('.nav__link');   
+            function colorLink(){
+              linkColor.forEach(l => l.classList.remove('active'));
+              this.classList.add('active');
+            }
+
+            linkColor.forEach(l => l.addEventListener('click', colorLink));
+    </script>
+    {% block scripts %}{% endblock scripts %}
+</html>

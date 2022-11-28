@@ -1,0 +1,114 @@
+{% extends 'Calories/base.html' %}
+{% load static %}
+{% block title %}Report{% endblock title %}
+{% block body %}
+<div id="content-wrapper" style="padding-top: 105px">
+
+<div class="container-fluid">
+  <div class="container mt-5 mb-5">
+      <div class="row">
+        <div class="col-sm-4">
+          <!-- Search form-->
+          <form action="" method="post">
+              <h1>Search Report &#8595;</h1>
+              {% csrf_token %}
+              <div class="mb-3">
+                  <label class="form-label">Enter Month to search</label>
+                  <input type="month" name="month" class="form-control"><br>
+                  <button type="submit" class="btn btn-primary">Show Report</button>
+              </div>
+          </form>
+          {% if searched %} 
+          {% if intake_calories == bmr %}
+          <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+<lottie-player src="https://assets8.lottiefiles.com/packages/lf20_i4zw2ddg.json"  background="transparent"  speed="1"  style="width: 300px; height: 300px;"  loop  autoplay></lottie-player>
+<h2 class="font-weight-bold text-success font-italic">YAY! You hit the target.</h2>
+          {% endif %}
+          {%endif%}
+
+        </div>
+
+      
+      <!--Graph-->
+      <div class="col-sm-6 offset-2">
+         <canvas id="myChart" width="200" height="150"></canvas>
+         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  {% if searched %} 
+<script>
+ const data = {
+  labels: ['{{month}}',],
+  datasets: [{
+    label: 'Monthly record {{month}}', 
+    data: [ {{intake_calories}}, {{bmr}},],
+    backgroundColor: [
+      'rgba(34,139,34)',
+    ],
+    borderColor: [
+      'rgba(0, 255, 0)',
+    ],
+    borderWidth: 1
+  },
+  {
+    label: 'BMR Traget is {{bmr}}',
+    backgroundColor: [
+      'rgba(255, 0, 0)',
+    ],
+    borderColor: [
+      'rgba(255, 26, 104, 1)',
+    ],
+    borderWidth: 1
+  }]
+};
+
+  //block horizontalTargetLine
+
+  const horizontalTargetLine = {
+    id: 'horizontalTargetLine',
+    beforeDatasetsDraw(chart, args, options) {
+        const {ctx, chartArea: {top, right,  bottom, left, width, height},
+        scales: {x,y} } = chart;
+        ctx.save();
+
+        //draw linebreaks
+        ctx.strokeStyle = 'red';
+        ctx.setLineDash([10,10])
+        ctx.strokeRect(left, y.getPixelForValue({{bmr}}), width, 0);
+        ctx.restore();
+
+    }
+  }
+
+// config 
+const config = {
+  type: 'bar',
+  data,
+  options: {
+    scales: {
+      y: {
+        beginAtZero: true
+      }
+    }
+  },
+  plugins: [horizontalTargetLine]
+};
+
+// render init block
+const myChart = new Chart(
+  document.getElementById('myChart'),
+  config
+);
+</script> 
+
+
+    {% elif month != searched %}
+              <div class="alert alert-danger alert-dismissible">
+                <a href="{% url 'graph' %}" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <strong>Sorry you don't have any record of month <B>{{month}}</b>.</strong>
+              </div> 
+              <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+              <lottie-player src="https://assets6.lottiefiles.com/packages/lf20_Dczay3.json"  background="transparent"  speed="1"  style="width: 300px; height: 300px;" hover autoplay></lottie-player>
+    {% endif %}
+    
+
+{% endblock body %}
+

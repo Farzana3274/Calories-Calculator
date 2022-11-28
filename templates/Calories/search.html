@@ -1,0 +1,74 @@
+{% extends 'Calories/base.html' %}
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}">
+{% block title %}Search{% endblock title %}
+
+{% block body %}
+{% if messages %}
+{% for message in messages %}
+    <div class="alert alert-warning alert-dismissible">
+        <a href="{% url 'search' %}" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <strong>{{ message }}</strong> 
+    </div>
+{% endfor %}
+{% endif %}
+<div class="container mt-5 mb-5">
+    <div class="row">
+      <div class="col-sm-4">
+            <form action="" method="post">
+                <h1>Search Record &#8595;</h1>
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label class="form-label">Enter Date to search</label>
+                    <input type="date" name="search_date" class="form-control">
+                </div>
+                <button type="submit" class="btn btn-primary " name="date_btn">Search</button><br>
+                <div class="mb-3">
+                    <label class="form-label">Enter Month to search</label>
+                    <input type="month" name="search_month" class="form-control">
+                </div>
+                <button type="submit" class="btn btn-primary " name="month_btn">Search</button><br>
+                <div class="mb-3">
+                    <label class="form-label">Enter week to search</label>
+                    <input type="week" name="search_week" class="form-control">
+                </div>
+                <button type="submit" class="btn btn-primary " name="week_btn">Search</button>
+            </form>
+        </div>
+    
+        <div class="col-sm-7 offset-1">
+            {%if searched%}
+                <table class="table">
+                    <thead>
+                    <tr class="bg-dark text-white">
+                        <th >Meals'Type</th>
+                        <th>Food Name</th>
+                        <th>Quantity</th>
+                        <th >Caloties</th>
+                        <th >Date</th>
+                    </tr>
+                    </thead>
+                    <tbody class="bg-light">
+                        {% for datee in searched %}
+                            <tr>
+                                <td>{{datee.Meals}}</td>
+                                <td>{{datee.Food_Name}}</td>
+                                <td>{{datee.Quantity}}</td>
+                                <td>{{datee.Calories}}</td>
+                                <td>{{datee.Date}}</td>
+                            </tr>
+                        {% endfor %}
+                {% elif month or week or date !=  searched%}            
+                        <div class="alert alert-warning alert-dismissible">
+                            <a href="{% url 'search' %}" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                            <strong>Sorry you don't have any Record of this Date.</strong>
+                        </div>
+                    </tbody>
+                </table>
+                <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+                <lottie-player src="https://assets6.lottiefiles.com/packages/lf20_Dczay3.json"  background="transparent"  speed="1"  style="width: 300px; height: 300px;" hover autoplay></lottie-player>
+            {% endif %}
+              
+        </div>
+    </div>
+{% endblock body %}

@@ -1,0 +1,14 @@
+{% extends 'Calories/base.html' %}
+{% load static %}
+{% block title %}Update_BMR{% endblock title %}
+
+{% block body %}
+    <h1 class="mt-5 text-center">Update your Calories here. &#8595;</h1>
+    <div class="container center_div mx-auto shadow-lg p-3 mb-5 bg-body rounded ">
+   <form action="" method="post" class="shadow p-4 mb-5 bg-light rounded">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Update BMR</button><br>
+</form>
+</div>
+{% endblock body %}

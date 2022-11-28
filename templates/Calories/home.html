@@ -1,0 +1,128 @@
+{% extends 'Calories/base.html' %}
+{% load static %}
+{% block head %}<link rel="stylesheet" type="text/css" href="{% static 'css/home.css' %}">{% endblock head %}
+{% block title %}Home{% endblock title %}
+
+{% block body %}
+<div class="row justify-content-center"> 
+  <h1 class="mt-5 text-center text-muted">Calories Tracker &#8595;</h1><br>
+</div>
+
+<div class="row justify-content-around">
+  <div class="col-4">
+    {% if FoodInfoo == Nill %}
+    <h3 class="alert alert-danger ">You Don't have enter any food items yet.</h3>
+    {% elif intake_calories == bmr %}
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+    <lottie-player src="https://assets8.lottiefiles.com/packages/lf20_ma7mumrx.json"  background="transparent"  speed="1"  style="width: 300px; height: 300px;" hover loop  autoplay></lottie-player>
+    <hr><br>
+      {% endif %}
+        <table class="table table-secondary w-5 h-5" >
+          <tr>
+            <th >Your Status &darr; {{BMRdata.joined_date}}</th>
+          </tr>
+          <tbody class="bg-light">
+
+            <tr>
+              <th >BMR &#8594;</th>
+              <td><b>{{bmr}}</b>  Your estimated BMR daily target.</td>
+            </tr>
+            {% if intake_calories == Nill %}
+            <tr>
+              <th>Intake Calories &#8594;</t>
+                <td>0</td>
+              {% else %} 
+              <th>Intake Calories &#8594;</t>
+              <td>{{intake_calories}}</td>
+            </tr>
+            {% endif %}
+
+            {% if cal_status == Nill %}
+            <tr>
+              <th>Calories_status &#8594;</t>
+                <td>Nill</td>
+            {% else %}
+              {% if intake_calories < bmr %}
+                <th>Calories_status &#8594;</t>
+                <td>More <b>{{cal_status}}</b> Calories are needed to attain daily target.</td>
+              {% elif intake_calories > bmr %}
+                <th>Calories_status &#8594;</t>
+                <td>Less <b>{{cal_status}}</b> Calories are needed to attain daily target.</td>
+              {% elif intake_calories == bmr %}
+                <th>Calories_status &#8594;</t>
+                <td><strong>Congrats!</strong> You have Achived your BMR Target.</td>
+              {% endif %}
+            </tr>
+            {% endif %}
+          </tbody>
+        </table>
+
+  </div>
+
+  <div class="col-4 offset-2">
+    <h3 class="text-center alert alert-secondary">Add Food Info</h3>
+    {% if intake_calories != bmr %}
+      <button type="button" class="btn btn-primary rounded-pill shadow" onclick="document.getElementById('demo').style.display='block'" style="border-radius:20px;"><b>Add Nutritions</b></button>
+    {% elif intake_calories == bmr %}
+      <button type="button" disabled class="btn btn-primary rounded-pill shadow" onclick="document.getElementById('demo').style.display='block'" style="border-radius:20px;"><b>Add Nutritions</b></button>
+    {%endif%}
+          <form action="{% url 'home' %}" method="post" class="shadow p-4 mb-5 bg-body rounded" id="demo" style="display:none" >
+            {% csrf_token %}
+            <div class="mb-3">
+            <select  aria-label="Default select example" name="Meals" class="form-control">
+              <option selected>Breakfast</option>
+              <option value="Lunch">Lunch</option>
+              <option value="Dinner">Dinner</option>
+            </select>
+          </div>
+              <div class="mb-3">
+                <label class="form-label">Food Name</label>
+                <input type="text" class="form-control" name="Food_Name">
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Quantity</label>
+                <input type="number" class="form-control" name="Quantity">
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Calories</label>
+                <input type="number" class="form-control" name="Calories">
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Date</label>
+                <input type="date" name="Date" class="form-control">
+              </div>
+           <button type="submit"class="btn btn-primary rounded-pill" onclick="document.getElementById('demo1').style.display='block'">ADD</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+			<div class="col-sm-7 offset-5 m-5">
+        <h1 class="mt-5 text-center">Nutritions Taken Table. &#8595;</h1><br>
+        <table class="table">
+            <thead>
+              <tr class="bg-secondary">
+                <th >Meals'Type</th>
+                <th>Food Name</th>
+                <th>Quantity</th>
+                <th >Calories</th>
+                <th >Date</th>
+              </tr>
+            </thead>
+            <tbody class="bg-light">
+              {% for i in FoodInfoo %}
+              <tr>
+                <td>{{i.Meals}}</td>
+                <td>{{i.Food_Name}}</td>
+                <td>{{i.Quantity}}</td>
+                <td>{{i.Calories}}</td>
+                <td>{{i.Date}}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+        </table>
+      </div>
+</div>
+
+
+ {% endblock body %}
